@@ -1,7 +1,10 @@
 #include <iostream>
+#include <cmath>
 using namespace std;
-void main()
+
+int main()
 {
-    int x = 0.0f / 0.0f;
+    float x = nan("");
     cout << "x = " << x << " Comparison = " << ((x < 1.0f) || (x > 10.0f)) << endl;
+    return 0;
 }

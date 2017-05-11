@@ -47,3 +47,25 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+header {
+	background-color: cyan;
+	border: 1px solid red
+}
+
+section {
+    background-color: chartreuse;
+    border: 1px solid red;
+}
+
+aside {
+	background-color: cornflowerblue;
+	border: 1px solid red;
+}
+
+footer {
+	background-color: coral;
+	border: 1px solid red;
+}
+
+

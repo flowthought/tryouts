@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Alegreya+Sans:400,700|EB+Garamond|Gentium+Basic:400,700|Lato:400,700|Vollkorn:400,700');
+
 * {
   box-sizing: border-box;
 }
@@ -11,17 +13,25 @@ header{
 }
 
 h1 {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Lato', sans-serif;
+  /* font-family: 'Alegreya Sans', sans-serif; */
+  /* font-family: 'Gentium Basic', serif; */
+  /* font-family: 'Vollkorn', serif; */
+  /* font-family: 'EB Garamond', serif; */
   font-size: 2.5em;
   font-weight: 700;
   text-align: center;
 }
 
 p {
+  font-family: 'Lato', sans-serif;
+  /* font-family: 'Alegreya Sans', sans-serif; */
+  /* font-family: 'Gentium Basic', serif; */
+  /* font-family: 'Vollkorn', serif; */
+  /* font-family: 'EB Garamond', serif; */
   margin: 1em;
-  font-family: 'Libre Baskerville', serif;
   font-size: 1em;
-  line-height: 2.0em;
+  line-height: 1.5em;
 }
 
 .blogtitle {

@@ -54,22 +54,23 @@ p {
 
 .aside-left {
   order: 1;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   /* width: 25%; */
 	background-color: cornflowerblue;
 }
 
 .main {
   order: 2;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   padding: 2em;
+  min-width: 0;
   max-width: 1024px;
   background-color: green;
 }
 
 .aside-right {
   order: 3;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   /* width: 25%; */
 	background-color: coral;
 }

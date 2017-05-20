@@ -6,13 +6,31 @@ body {
   font-size: 100%;
 }
 
+header{
+  margin: 2em 0em;
+}
+
+h1 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 2.5em;
+  font-weight: 700;
+  text-align: center;
+}
+
+p {
+  margin: 1em;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1em;
+  line-height: 2.0em;
+}
+
 .blogtitle {
   display: flex;
   justify-content: center;
   align-items: center;
 
   padding: 0.25em;
-  font-size: 4em;
+  font-size: 2em;
   font-family: 'Dancing Script', cursive;
   /* font-family: 'Parisienne', cursive; */
   /* font-family: 'Alex Brush', cursive; */

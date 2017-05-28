@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=Cormorant:600|Playfair+Display:900');
+
+* {
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 400px) {
+  .main {
+    background-color: gold;
+  }
+}
+
+
+@media screen and (min-width: 800px) {
+  .main {
+    background-color: red;
+  }
+}
+
+
+

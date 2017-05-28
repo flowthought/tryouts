@@ -21,14 +21,15 @@ h1 {
 }
 
 p {
-  font-family: 'Cormorant', serif;
+  font-family: 'Crimson Text', serif;
   /* font-family: 'Crimson Text', serif; */
   margin: 1em;
-  font-size: 1.75em;
+  font-size: 1.5em;
   line-height: 1.5em;
   /* font-weight: 400; */
-  font-weight: 600;
+  font-weight: 400;
   /* letter-spacing: 0.5px; */
+  text-align: justify;
 }
 
 .header {
@@ -56,9 +57,6 @@ p {
 
 .main {
   order: 2;
-  flex: 1 1 1024px;
-  padding: 2em;
-  border: 5px solid red;
 }
 
 .aside-right {
@@ -67,3 +65,29 @@ p {
   /* width: 25%; */
   border: 5px solid blue;
 }
+
+@media screen and (min-width : 320px) and (max-width: 768px) {
+  .main {
+    flex: 2 1 768px;
+    border: 5px solid gold;
+    /* padding: 0.25em; */
+  }
+}
+
+/* @media screen and (min-width: 465px) and (max-width: 768px) { */
+/*   .main { */
+/*     flex: 2 1 768px; */
+/*     border: 5px solid red; */
+/*     /1* padding: 0.25em; *1/ */
+/*   } */
+/* } */
+
+@media screen and (min-width: 769px) {
+
+  .main {
+    flex: 1 1 80em;
+    border: 5px solid blue;
+    /* padding: 2em; */
+  }
+}
+

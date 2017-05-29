@@ -66,21 +66,24 @@ p {
   border: 5px solid blue;
 }
 
-@media screen and (min-width : 320px) and (max-width: 768px) {
+@media screen and (min-width : 0px) and (max-width: 464px) {
+  body {
+    font-size: 14px;
+  }
   .main {
-    flex: 2 1 768px;
+    flex: 2 1 480px;
     border: 5px solid gold;
     /* padding: 0.25em; */
   }
 }
 
-/* @media screen and (min-width: 465px) and (max-width: 768px) { */
-/*   .main { */
-/*     flex: 2 1 768px; */
-/*     border: 5px solid red; */
-/*     /1* padding: 0.25em; *1/ */
-/*   } */
-/* } */
+@media screen and (min-width: 465px) and (max-width: 768px) {
+  .main {
+    flex: 2 1 768px;
+    border: 5px solid red;
+    /* padding: 0.25em; */
+  }
+}
 
 @media screen and (min-width: 769px) {
 

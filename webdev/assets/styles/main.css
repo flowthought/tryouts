@@ -70,7 +70,7 @@ header {
 
   .main {
     flex: 2 1 480px;
-    border: 5px solid gold;
+    border: 5px solid red;
     /* padding: 0.25em; */
   }
 
@@ -99,18 +99,18 @@ header {
 
 @media screen and (min-width: 769px) {
   .aside-left {
-    flex: 1 1 25%;
+    flex: 1 1 auto;
     border: 5px solid green;
   }
   .main {
-    flex: 2 1 50%;
-    border: 5px solid red;
+    flex: 1 1 500px;
+    border: 5px solid gold;
     /* padding: 2em; */
   }
 
   .aside-right {
     order: 3;
-    flex: 1 1 25%;
+    flex: 1 1 auto;
     border: 5px solid blue;
   }
 }

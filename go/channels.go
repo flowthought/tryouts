@@ -1,4 +1,5 @@
 // Parallel sort lists on multiple threads using fair scheduling
+// With default params, 4 jobs get scheduled correctly on 4 threads
 
 package main
 
@@ -45,14 +46,18 @@ func worker(state chan<- ThreadState, dispatcher <-chan func(), i int) {
         if more {
             fmt.Println("Worker", i, "starting job")
             state <- Busy
+            start := time.Now()
             job()
+            end := time.Now()
             state <- Idle
-            fmt.Println("Worker", i, "completed job")
+            fmt.Println("Worker", i, "completed job in", end.Sub(start))
         } else {
             fmt.Println("Worker", i, "finished all jobs")
             state <- Done
+            break
         }
     }
+    close(state)
 }
 
 func schedule(n int, l int, t int) {
@@ -91,12 +96,17 @@ func schedule(n int, l int, t int) {
             fmt.Println("Cleaning up")
             for i := 0; i < t; i++ {
                 close(dispatchers[i])
+                for {
+                    _, more := <-states[i]
+                    if !more {
+                        fmt.Println("Thread", i, "terminated")
+                        break
+                    }
+                }
             }
-            break
+            return
         }
     }
-
-    return
 }
 
 func main() {

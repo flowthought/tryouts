@@ -15,7 +15,8 @@ const (
     Unknown ThreadState = 0
     Idle    ThreadState = 1
     Busy    ThreadState = 2
-    Done    ThreadState = 3
+    Paused  ThreadState = 3
+    Done    ThreadState = 4
 )
 
 type ThreadMessage int
@@ -36,27 +37,37 @@ func sortnums(n int) {
     sort.Ints(seq)
 }
 
-func worker(state chan<- ThreadState, dispatcher <-chan func(), message <-chan ThreadMessage) {
+func worker(state chan<- ThreadState, dispatcher <-chan func(), /*message <-chan ThreadMessage,*/ i int) {
+    fmt.Println("Worker", i, "started")
     state <- Idle
     for {
         select {
-        case job := <-dispatcher:
-            state <- Busy
-            job()
-            state <- Idle
-        case msg := <-message:
-            switch msg {
-            case Pause:
-                // Implementation
-            case Resume:
-                // Implementation
-            case Cancel:
-                // Implementation
-            case End:
-                state <- Done
-                close(state)
-                return
+        case job, more := <-dispatcher: {
+            if more {
+                fmt.Println("Worker", i, "starting job")
+                state <- Busy
+                job()
+                state <- Idle
+                fmt.Println("Worker", i, "completed job")
             }
+            else {
+                fmt.Println("Worker", i, "finished all jobs")
+                state <- Done
+            }
+        }
+        // case msg := <-message:
+        //     switch msg {
+        //     case Pause:
+        //         state <- Paused
+        //     case Resume:
+        //         state <- Idle
+        //     case Cancel:
+        //         // Implementation
+        //     case End:
+        //         fmt.Println("Worker", i, "received terminate")
+        //         state <- Done
+        //         close(state)
+        //         return
         default:
         }
     }
@@ -67,13 +78,14 @@ func schedule(n int, l int, t int) {
     // Init
     states := make([]chan ThreadState, t)
     dispatchers := make([]chan func(), t)
-    messages := make([]chan ThreadMessage, t)
+    // messages := make([]chan ThreadMessage, t)
     for i := 0; i < t; i++ {
-        states[i] = make(chan ThreadState, 5)
-        dispatchers[i] = make(chan func(), 5)
-        messages[i] = make(chan ThreadMessage, 5)
+        states[i] = make(chan ThreadState, 15)
+        dispatchers[i] = make(chan func(), 15)
+        // messages[i] = make(chan ThreadMessage, 15)
 
-        go worker(states[i], dispatchers[i], messages[i])
+        fmt.Println("Scheduling worker", i)
+        go worker(states[i], dispatchers[i], /*messages[i]*/, i)
     }
 
     knownStates := make([]ThreadState, t)
@@ -83,19 +95,21 @@ func schedule(n int, l int, t int) {
             select {
             case knownStates[i] = <-states[i]:
                 if knownStates[i] == Idle && remaining > 0 {
+                    fmt.Println("Thread", i, "available for scheduling dispatch")
                     dispatchers[i] <- func () {
                         sortnums(n)
                     }
                     remaining--
+                    fmt.Println("Scheduled on thread", i)
+                    fmt.Println("Remaining jobs:", remaining)
                 }
             default:
                 continue
             }
         }
         if remaining == 0 {
+            fmt.Println("Cleaning up")
             for i := 0; i < t; i++ {
-                messages[i] <- End
-                close(messages[i])
                 close(dispatchers[i])
             }
             break

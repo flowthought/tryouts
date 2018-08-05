@@ -13,19 +13,11 @@ var prng *rand.Rand
 
 type ThreadState int
 const (
-    Unknown ThreadState = 0
-    Idle    ThreadState = 1
-    Busy    ThreadState = 2
-    Paused  ThreadState = 3
-    Done    ThreadState = 4
-)
-
-type ThreadMessage int
-const (
-    Pause   ThreadMessage = 0 + iota
-    Resume
-    Cancel
-    End
+    Unknown ThreadState = 0 + iota
+    Idle
+    Busy
+    Paused
+    Done
 )
 
 func sortnums(n int) {

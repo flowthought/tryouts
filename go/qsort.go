@@ -37,11 +37,11 @@ func partition(seq []int, lo int, hi int) int {
     boundary := lo - 1
     for i := lo; i <= hi; i++ {
         if seq[i] < pivot {
-            boundary = boundary + 1
+            boundary++
             seq[boundary], seq[i] = seq[i], seq[boundary]
         }
     }
-    boundary = boundary + 1
+    boundary++
     seq[boundary], seq[hi] = pivot, seq[boundary]
     return boundary
 }

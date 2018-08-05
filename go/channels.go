@@ -37,38 +37,20 @@ func sortnums(n int) {
     sort.Ints(seq)
 }
 
-func worker(state chan<- ThreadState, dispatcher <-chan func(), /*message <-chan ThreadMessage,*/ i int) {
+func worker(state chan<- ThreadState, dispatcher <-chan func(), i int) {
     fmt.Println("Worker", i, "started")
     state <- Idle
     for {
-        select {
-        case job, more := <-dispatcher: {
-            if more {
-                fmt.Println("Worker", i, "starting job")
-                state <- Busy
-                job()
-                state <- Idle
-                fmt.Println("Worker", i, "completed job")
-            }
-            else {
-                fmt.Println("Worker", i, "finished all jobs")
-                state <- Done
-            }
-        }
-        // case msg := <-message:
-        //     switch msg {
-        //     case Pause:
-        //         state <- Paused
-        //     case Resume:
-        //         state <- Idle
-        //     case Cancel:
-        //         // Implementation
-        //     case End:
-        //         fmt.Println("Worker", i, "received terminate")
-        //         state <- Done
-        //         close(state)
-        //         return
-        default:
+        job, more := <-dispatcher
+        if more {
+            fmt.Println("Worker", i, "starting job")
+            state <- Busy
+            job()
+            state <- Idle
+            fmt.Println("Worker", i, "completed job")
+        } else {
+            fmt.Println("Worker", i, "finished all jobs")
+            state <- Done
         }
     }
 }
@@ -78,14 +60,12 @@ func schedule(n int, l int, t int) {
     // Init
     states := make([]chan ThreadState, t)
     dispatchers := make([]chan func(), t)
-    // messages := make([]chan ThreadMessage, t)
     for i := 0; i < t; i++ {
         states[i] = make(chan ThreadState, 15)
         dispatchers[i] = make(chan func(), 15)
-        // messages[i] = make(chan ThreadMessage, 15)
 
         fmt.Println("Scheduling worker", i)
-        go worker(states[i], dispatchers[i], /*messages[i]*/, i)
+        go worker(states[i], dispatchers[i], i)
     }
 
     knownStates := make([]ThreadState, t)

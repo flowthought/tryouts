@@ -1,5 +1,4 @@
 // Parallel sort lists on multiple threads using fair scheduling
-// With default params, 4 jobs get scheduled correctly on 4 threads
 
 package main
 
@@ -11,18 +10,19 @@ import "sort"
 
 var prng *rand.Rand
 
+// This is the go way to make an enum
 type ThreadState int
 const (
-    Unknown ThreadState = 0 + iota
+    Unknown ThreadState = 0 + iota // iota automatically fills out the rest
     Idle
     Busy
     Paused
     Done
 )
 
+// Some non-trivial job scaling with n
 func sortnums(n int) {
     seq := make([]int, n)
-
     randmax := n * 100
     for i := 0; i < n; i++ {
         seq[i] = prng.Intn(randmax)
@@ -30,6 +30,7 @@ func sortnums(n int) {
     sort.Ints(seq)
 }
 
+// Worker Thread
 func worker(state chan<- ThreadState, dispatcher <-chan func(), i int) {
     fmt.Println("Worker", i, "started")
     state <- Idle
@@ -43,7 +44,7 @@ func worker(state chan<- ThreadState, dispatcher <-chan func(), i int) {
             end := time.Now()
             state <- Idle
             fmt.Println("Worker", i, "completed job in", end.Sub(start))
-        } else {
+        } else {    // more is false when dispatcher channel is closed
             fmt.Println("Worker", i, "finished all jobs")
             state <- Done
             break
@@ -53,8 +54,7 @@ func worker(state chan<- ThreadState, dispatcher <-chan func(), i int) {
 }
 
 func schedule(n int, l int, t int) {
-
-    // Init
+    // Init workers
     states := make([]chan ThreadState, t)
     dispatchers := make([]chan func(), t)
     for i := 0; i < t; i++ {
@@ -65,6 +65,7 @@ func schedule(n int, l int, t int) {
         go worker(states[i], dispatchers[i], i)
     }
 
+    // Dispatch jobs to whichever thread is available
     knownStates := make([]ThreadState, t)
     remaining := l
     for {
@@ -87,7 +88,10 @@ func schedule(n int, l int, t int) {
         if remaining == 0 {
             fmt.Println("Cleaning up")
             for i := 0; i < t; i++ {
+                // Close dispatcher channel so thread will know it's done
                 close(dispatchers[i])
+
+                // Wait for threads to finish
                 for {
                     _, more := <-states[i]
                     if !more {
